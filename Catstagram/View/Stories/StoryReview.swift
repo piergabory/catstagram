@@ -26,6 +26,7 @@ struct StoryReview: View {
             .background()
             .colorScheme(.dark)
             .toolbarVisibility(.hidden, for: .navigationBar)
+            .environment(viewModel)
     }
 }
 
