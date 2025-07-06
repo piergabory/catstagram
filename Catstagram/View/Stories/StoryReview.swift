@@ -20,7 +20,7 @@ struct StoryReview: View {
     }
 
     var body: some View {
-        PostView(post: viewModel.currentPost)
+        PostView(post: viewModel.currentPost, authorID: viewModel.story.userID)
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background()

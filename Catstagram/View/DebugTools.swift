@@ -36,3 +36,8 @@ struct DebugTools: View {
         }
     }
 }
+
+#Preview {
+    DebugTools()
+        .modelContainer(for: [Story.self, Post.self])
+}

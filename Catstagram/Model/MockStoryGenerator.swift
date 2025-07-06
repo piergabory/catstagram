@@ -32,7 +32,9 @@ struct MockStoryGenerator {
 
         return (0 ..< postCount).map { index in
             let content = URL(string: "https://picsum.photos/id/\(index)/400/400")!
-            return Post(contentURL: content)
+            let date = Date.now - TimeInterval.random(in: 0 ... 30000)
+
+            return Post(contentURL: content, date: date)
         }
     }
 }

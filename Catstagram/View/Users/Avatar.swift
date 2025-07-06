@@ -30,6 +30,7 @@ struct Avatar: View {
         }
         .aspectRatio(1, contentMode: .fit)
         .foregroundStyle(.secondary)
+        .clipShape(Circle())
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

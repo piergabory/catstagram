@@ -26,6 +26,7 @@ final class Story: Identifiable {
 @Model
 final class Post {
     var contentURL: URL
+    var date: Date
     var duration: TimeInterval = 5.0
     var isSeen = false
     var isLiked = false
@@ -33,8 +34,12 @@ final class Post {
     @Relationship(inverse: \Story.posts)
     var story: Story?
 
-    init(contentURL: URL, duration: TimeInterval = 5.0, isSeen: Bool = false, isLiked: Bool = false) {
+    init(
+        contentURL: URL,
+        date: Date
+    ) {
         self.contentURL = contentURL
+        self.date = date
         self.duration = duration
         self.isSeen = isSeen
         self.isLiked = isLiked
