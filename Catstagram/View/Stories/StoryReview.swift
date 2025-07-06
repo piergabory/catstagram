@@ -8,10 +8,19 @@
 import SwiftUI
 
 struct StoryReview: View {
-    let user: User
+    @State
+    private var viewModel: StoryReviewViewModel
+
+    init?(_ stories: some Collection<Story>) {
+        if let viewModel = StoryReviewViewModel(stories) {
+            self.viewModel = viewModel
+        } else {
+            return nil
+        }
+    }
 
     var body: some View {
-        Text(user.name)
+        PostView(post: viewModel.currentPost)
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background()
@@ -21,5 +30,5 @@ struct StoryReview: View {
 }
 
 #Preview {
-    StoryReview(user: .mockUser)
+    StoryReview([])
 }

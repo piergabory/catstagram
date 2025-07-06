@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct CatstagramApp: App {
     var body: some Scene {
         WindowGroup {
             MainScreen()
+                .modelContainer(for: [Story.self, Post.self])
         }
     }
 }

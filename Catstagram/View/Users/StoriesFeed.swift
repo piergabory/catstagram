@@ -6,37 +6,39 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct StoriesFeed: View {
-    @State
-    private var users: [User] = []
+    @Environment(UserRepository.self)
+    private var userRepository: UserRepository
+
+    @Query
+    private var stories: [Story] = []
 
     @Namespace
     private var transitionNamespace
 
     var body: some View {
         Carousel {
-            stories
+            userProfiles
         }
-        .navigationDestination(for: User.self) { user in
-            StoryReview(user: user)
-                .navigationTransition(.zoom(sourceID: user.id, in: transitionNamespace))
-        }
-        .task {
-            do {
-                users = try await UserList.loadFromUsersJSONFile().users
-            } catch {
-                print(error)
+        .navigationDestination(for: User.ID.self) { userID in
+            let stories = stories.drop { story in
+                story.userID != userID
             }
+
+            StoryReview(stories)
+                .navigationTransition(.zoom(sourceID: userID, in: transitionNamespace))
         }
     }
 
-    private var stories: some View {
-        ForEach(users) { user in
-            NavigationLink(value: user) {
-                ProfilePreview(user: user)
-                    .matchedTransitionSource(id: user.id, in: transitionNamespace)
+    private var userProfiles: some View {
+        ForEach(stories) { story in
+            NavigationLink(value: story.userID) {
+                ProfilePreview(userID: story.userID)
+                    .matchedTransitionSource(id: story.userID, in: transitionNamespace)
             }
+            .foregroundStyle(.primary)
         }
     }
 }

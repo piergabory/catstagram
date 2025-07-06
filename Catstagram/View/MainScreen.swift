@@ -8,11 +8,18 @@
 import SwiftUI
 
 struct MainScreen: View {
+    @State
+    private var userRepository = UserRepository()
+
     var body: some View {
         NavigationStack {
             content
                 .navigationTitle("Catstagram")
                 .navigationBarTitleDisplayMode(.inline)
+        }
+        .environment(userRepository)
+        .task {
+            try? await userRepository.fetch()
         }
     }
 
@@ -21,6 +28,7 @@ struct MainScreen: View {
             VStack(spacing: 32) {
                 stories
                 posts
+                DebugTools()
             }
         }
     }
@@ -49,4 +57,5 @@ struct MainScreen: View {
 
 #Preview {
     MainScreen()
+        .modelContainer(for: [Story.self, Post.self])
 }

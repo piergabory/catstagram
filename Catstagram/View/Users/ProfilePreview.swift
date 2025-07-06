@@ -8,7 +8,14 @@
 import SwiftUI
 
 struct ProfilePreview: View {
-    let user: User
+    @Environment(UserRepository.self)
+    private var userRepository: UserRepository
+
+    let userID: User.ID
+
+    var user: User? {
+        userRepository.getUser(id: userID)
+    }
 
     var body: some View {
         VStack {
@@ -23,14 +30,19 @@ struct ProfilePreview: View {
     }
 
     private var avatarView: some View {
-        Image(systemName: "person.crop.circle.fill")
-            .resizable()
-            .aspectRatio(1, contentMode: .fit)
-            .foregroundStyle(.secondary)
+        Avatar(url: user?.avatarURL)
+            .aspectRatio(1, contentMode: .fill)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(.fill)
+            .clipShape(Circle())
+            .overlay {
+                Circle()
+                    .stroke(.separator, lineWidth: 1 / UIScreen.main.scale)
+            }
     }
 
     private var handleView: some View {
-        Text(user.name)
+        Text(user?.name ?? "?")
             .font(.caption)
             .lineLimit(1)
             .truncationMode(.tail)
@@ -39,5 +51,5 @@ struct ProfilePreview: View {
 }
 
 #Preview {
-    ProfilePreview(user: .mockUser)
+    ProfilePreview(userID: 1)
 }
