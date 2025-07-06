@@ -17,8 +17,32 @@ struct MainScreen: View {
     }
 
     private var content: some View {
-        VStack {
-            Text("TODO...")
+        ScrollView {
+            VStack(spacing: 32) {
+                stories
+                posts
+            }
+        }
+    }
+
+    private var stories: some View {
+        VStack(alignment: .leading) {
+            Text("Stories")
+                .font(.title2.bold())
+                .padding(.horizontal)
+            StoriesFeed()
+                .frame(maxWidth: .infinity)
+        }
+    }
+
+    private var posts: some View {
+        VStack(alignment: .leading) {
+            Text("Posts")
+                .font(.title2.bold())
+                .padding(.horizontal)
+
+            Text("Stay tuned.")
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }
