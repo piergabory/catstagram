@@ -14,11 +14,16 @@ struct StoriesFeed: View {
         Carousel {
             stories
         }
+        .navigationDestination(for: User.self) { user in
+            StoryReview(user: user)
+        }
     }
 
     private var stories: some View {
         ForEach(users) { user in
-            Text(user.handle)
+            NavigationLink(value: user) {
+                ProfilePreview(user: user)
+            }
         }
     }
 }
@@ -26,5 +31,7 @@ struct StoriesFeed: View {
 
 
 #Preview {
-    StoriesFeed()
+    NavigationStack {
+        StoriesFeed()
+    }
 }
