@@ -28,6 +28,7 @@ struct PostView: View {
                 }
             }
             .id(post)
+            .transition(.opacity.animation(.linear(duration: 0)))
     }
 
     private var content: some View {
@@ -39,6 +40,12 @@ struct PostView: View {
 
 #Preview {
     @Previewable @State var userRepository = UserRepository()
+    @Previewable @State var storyReview = StoryReviewViewModel([
+        Story(
+            userID: 2,
+            posts: [Post(contentURL: URL(string: "https://picsum.photos/id/2/400/400")!, date: .now)]
+        )!
+    ])
 
     PostView(
         post: Post(
@@ -48,6 +55,7 @@ struct PostView: View {
         authorID: 1
     )
     .environment(userRepository)
+    .environment(storyReview)
     .task {
         try? await userRepository.fetch()
     }

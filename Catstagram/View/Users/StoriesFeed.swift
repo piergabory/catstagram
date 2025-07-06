@@ -35,7 +35,7 @@ struct StoriesFeed: View {
     private var userProfiles: some View {
         ForEach(stories) { story in
             NavigationLink(value: story.userID) {
-                ProfilePreview(userID: story.userID)
+                ProfilePreview(userID: story.userID, hasNewStory: story.hasUnseenPosts)
                     .matchedTransitionSource(id: story.userID, in: transitionNamespace)
             }
             .foregroundStyle(.primary)

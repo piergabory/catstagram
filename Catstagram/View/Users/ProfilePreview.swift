@@ -12,6 +12,7 @@ struct ProfilePreview: View {
     private var userRepository: UserRepository
 
     let userID: User.ID
+    let hasNewStory: Bool
 
     var user: User? {
         userRepository.getUser(id: userID)
@@ -22,7 +23,7 @@ struct ProfilePreview: View {
             avatarView
                 .padding(4)
                 .overlay {
-                    // TODO: Put the story status ring here
+                    StoryStatusRing(isSeen: hasNewStory == false)
                 }
             handleView
         }
@@ -51,5 +52,6 @@ struct ProfilePreview: View {
 }
 
 #Preview {
-    ProfilePreview(userID: 1)
+    ProfilePreview(userID: 1, hasNewStory: true)
+    ProfilePreview(userID: 2, hasNewStory: false)
 }

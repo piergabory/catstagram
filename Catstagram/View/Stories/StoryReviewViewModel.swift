@@ -10,6 +10,9 @@ import Observation
 
 @Observable
 final class StoryReviewViewModel {
+    private let clock = SuspendingClock()
+    private var autoAdvanceWaitingTask: Task<Void, Never>?
+
     let story: Story
     let nextStory: StoryReviewViewModel?
 
@@ -29,5 +32,24 @@ final class StoryReviewViewModel {
         if currentPostIndex < story.posts.count - 1 {
             currentPostIndex += 1
         }
+    }
+
+    func autoAdvance() async {
+        while currentPostIndex < story.posts.count - 1 {
+            await waitForCurrentPostDuration()
+            if autoAdvanceWaitingTask?.isCancelled == false {
+                // User skipped manually, ignore.
+                next()
+            }
+        }
+        // wait for the last post
+        await waitForCurrentPostDuration()
+    }
+
+    private func waitForCurrentPostDuration() async {
+        autoAdvanceWaitingTask = Task {
+            try? await clock.sleep(for: .seconds(currentPost.duration))
+        }
+        await autoAdvanceWaitingTask?.value
     }
 }

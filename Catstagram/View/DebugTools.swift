@@ -28,8 +28,8 @@ struct DebugTools: View {
 
     private func resetStorage() {
         do {
-            try modelContext.delete(model: Post.self)
             try modelContext.delete(model: Story.self)
+            try modelContext.delete(model: Post.self)
             try MockStoryGenerator(modelContext: modelContext).generateStories()
         } catch {
             print(error)
