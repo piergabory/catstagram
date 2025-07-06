@@ -19,7 +19,8 @@ final class StoryReviewViewModel {
     private(set) var currentPostIndex = 0
 
     var currentPost: Post {
-        story.posts[currentPostIndex]
+        let safeIndex = min(max(0, currentPostIndex), story.posts.count - 1)
+        return story.posts[safeIndex]
     }
 
     init?(_ stories: some Collection<Story>) {
@@ -29,7 +30,7 @@ final class StoryReviewViewModel {
     }
 
     func next() {
-        if currentPostIndex < story.posts.count - 1 {
+        if currentPostIndex < story.posts.count {
             currentPostIndex += 1
         }
     }
@@ -47,8 +48,9 @@ final class StoryReviewViewModel {
     }
 
     private func waitForCurrentPostDuration() async {
-        autoAdvanceWaitingTask = Task {
-            try? await clock.sleep(for: .seconds(currentPost.duration))
+        let duration = currentPost.duration
+        autoAdvanceWaitingTask = Task.detached { [clock] in
+            try? await clock.sleep(for: .seconds(duration))
         }
         await autoAdvanceWaitingTask?.value
     }

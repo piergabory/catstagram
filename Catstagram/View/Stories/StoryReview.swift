@@ -31,15 +31,22 @@ struct StoryReview: View {
 
     private var skipStoryGesture: some Gesture {
         DragGesture(minimumDistance: 20).onEnded { gesture in
-            if gesture.translation.width > 0 {
+            if gesture.translation.width < 0 {
                 jumpToNextStory()
             }
         }
     }
 
     private var storyView: some View {
-        StoryView {
-            jumpToNextStory()
+        ZStack {
+            Rectangle().overlay { // Yes that's a hack. I have 30 mins left. 
+                StoryView {
+                    jumpToNextStory()
+                }
+            }
+            .id(viewModel.story)
+            .transition(.cube)
+            .animation(.default, value: viewModel.story)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.background.secondary)
@@ -89,4 +96,5 @@ struct StoryReview: View {
     .task {
         try? await userRepository.fetch()
     }
+    .imageCache()
 }

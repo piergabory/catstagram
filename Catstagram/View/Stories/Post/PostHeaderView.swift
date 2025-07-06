@@ -46,5 +46,6 @@ struct PostHeaderView: View {
     .task {
         try? await userRepository.fetch()
     }
+    .imageCache()
 }
 

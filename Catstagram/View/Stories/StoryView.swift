@@ -21,12 +21,18 @@ struct StoryView: View {
             .onTapGesture {
                 review.next()
             }
+            .overlay(alignment: .bottomTrailing) {
+                LikeButton(post: review.currentPost)
+                    .padding()
+            }
+            .overlay(alignment: .top) {
+                PostHeaderView(authorID: review.story.userID, date: review.currentPost.date)
+            }
             .task {
                 await review.autoAdvance()
                 onFinishedStory()
             }
             .id(review.story.userID)
-            .transition(.cube)
     }
 
     private var postView: some View {
@@ -58,5 +64,6 @@ struct StoryView: View {
     .task {
         try? await userRepository.fetch()
     }
+    .imageCache()
 }
 

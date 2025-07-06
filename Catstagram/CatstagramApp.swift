@@ -14,6 +14,7 @@ struct CatstagramApp: App {
         WindowGroup {
             MainScreen()
                 .modelContainer(for: [Story.self, Post.self])
+                .imageCache()
         }
     }
 }

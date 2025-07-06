@@ -53,5 +53,7 @@ struct ProfilePreview: View {
 
 #Preview {
     ProfilePreview(userID: 1, hasNewStory: true)
+        .imageCache()
     ProfilePreview(userID: 2, hasNewStory: false)
+        .imageCache()
 }

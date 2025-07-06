@@ -11,23 +11,13 @@ struct PostImage: View {
     let url: URL
 
     var body: some View {
-        AsyncImage(url: url) { phase in
-            switch phase {
-            case .empty:
-                ProgressView()
-            case .success(let image):
+        CachedImage(url) { image in
+            if let image {
                 image
                     .resizable()
-            case .failure(let error):
-                VStack {
-                    Image(systemName: "xmark.circle")
-                    Text(error.localizedDescription)
-                }
-            @unknown default:
-                VStack {
-                    Image(systemName: "xmark.circle")
-                    Text("API changed!")
-                }
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+            } else {
+                ProgressView()
             }
         }
     }
@@ -35,4 +25,5 @@ struct PostImage: View {
 
 #Preview {
     PostImage(url: URL(string: "https://picsum.photos/id/2/400/400")!)
+        .imageCache()
 }

@@ -58,4 +58,5 @@ struct MainScreen: View {
 #Preview {
     MainScreen()
         .modelContainer(for: [Story.self, Post.self])
+        .imageCache()
 }

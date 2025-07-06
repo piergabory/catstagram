@@ -17,10 +17,6 @@ struct PostView: View {
 
     var body: some View {
         content
-            .overlay(alignment: .top) {
-                PostHeaderView(authorID: authorID, date: post.date)
-            }
-            .colorScheme(.dark)
             .onAppear {
                 try? modelContext.transaction {
                     post.isSeen = true
@@ -59,4 +55,5 @@ struct PostView: View {
     .task {
         try? await userRepository.fetch()
     }
+    .imageCache()
 }

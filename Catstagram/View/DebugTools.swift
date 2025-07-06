@@ -24,12 +24,15 @@ struct DebugTools: View {
                 resetStorage()
             }
         }
+        .prefetch(images: stories.flatMap(\.posts).map(\.contentURL))
     }
 
     private func resetStorage() {
         do {
-            try modelContext.delete(model: Story.self)
-            try modelContext.delete(model: Post.self)
+            try modelContext.transaction {
+                try modelContext.delete(model: Story.self)
+                try modelContext.delete(model: Post.self)
+            }
             try MockStoryGenerator(modelContext: modelContext).generateStories()
         } catch {
             print(error)

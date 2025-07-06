@@ -18,22 +18,28 @@ struct StoriesFeed: View {
     @Namespace
     private var transitionNamespace
 
+    private var sortedStories: [Story] {
+        // Ideally i'd use query but it's a computed var, i don't have time to fix it.
+        stories.sorted { lhs, rhs in lhs.hasUnseenPosts }
+    }
+
     var body: some View {
         Carousel {
             userProfiles
         }
         .navigationDestination(for: User.ID.self) { userID in
-            let stories = stories.drop { story in
+            let stories = sortedStories.drop { story in
                 story.userID != userID
             }
 
             StoryReview(stories)
                 .navigationTransition(.zoom(sourceID: userID, in: transitionNamespace))
         }
+        .prefetch(images: userRepository.users.map(\.avatarURL))
     }
 
     private var userProfiles: some View {
-        ForEach(stories) { story in
+        ForEach(sortedStories) { story in
             NavigationLink(value: story.userID) {
                 ProfilePreview(userID: story.userID, hasNewStory: story.hasUnseenPosts)
                     .matchedTransitionSource(id: story.userID, in: transitionNamespace)
@@ -49,4 +55,5 @@ struct StoriesFeed: View {
     NavigationStack {
         StoriesFeed()
     }
+    .imageCache()
 }

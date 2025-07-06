@@ -12,7 +12,7 @@ struct Carousel<Content: View>: View {
 
     var body: some View {
         ScrollView(.horizontal) {
-            HStack {
+            LazyHStack {
                 content
             }
             .padding()

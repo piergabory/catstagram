@@ -11,20 +11,17 @@ struct Avatar: View {
     let url: URL?
 
     var body: some View {
-        AsyncImage(url: url) { phase in
-            switch phase {
-            case .success(let image):
-                image
-                    .resizable()
-            case .empty:
-                ProgressView()
-            case .failure(let error):
-                Image(systemName: "xmark.circle")
-                    .onAppear {
-                        print(error)
+        Group {
+            if let url {
+                CachedImage(url) { image in
+                    if let image {
+                        image.resizable()
+                    } else {
+                        ProgressView()
                     }
-            @unknown default:
-                Image(systemName: "xmark.circle")
+                }
+            } else {
+                Image(systemName: "person.crop.circle.fill")
                     .resizable()
             }
         }
@@ -37,4 +34,5 @@ struct Avatar: View {
 
 #Preview {
     Avatar(url: URL(string: "https://i.pravatar.cc/300?u=1"))
+        .imageCache()
 }
