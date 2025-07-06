@@ -11,7 +11,7 @@ import SwiftUI
 struct CatstagramApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainScreen()
         }
     }
 }
