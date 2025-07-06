@@ -30,7 +30,7 @@ struct ProfilePreview: View {
     }
 
     private var handleView: some View {
-        Text(user.handle)
+        Text(user.name)
             .font(.caption)
             .lineLimit(1)
             .truncationMode(.tail)
@@ -39,5 +39,5 @@ struct ProfilePreview: View {
 }
 
 #Preview {
-    ProfilePreview(user: User(handle: "piergabory"))
+    ProfilePreview(user: .mockUser)
 }

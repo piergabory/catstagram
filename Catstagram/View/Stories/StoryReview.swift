@@ -11,7 +11,7 @@ struct StoryReview: View {
     let user: User
 
     var body: some View {
-        Text(user.handle)
+        Text(user.name)
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background()
@@ -21,5 +21,5 @@ struct StoryReview: View {
 }
 
 #Preview {
-    StoryReview(user: User(handle: "piergabory"))
+    StoryReview(user: .mockUser)
 }

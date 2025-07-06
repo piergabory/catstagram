@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct StoriesFeed: View {
-    private let users: [User] = [User(handle: "piergabory"), User(handle: "backlon"), User(handle: "reckless")]
+    @State
+    private var users: [User] = []
 
     @Namespace
     private var transitionNamespace
@@ -20,6 +21,13 @@ struct StoriesFeed: View {
         .navigationDestination(for: User.self) { user in
             StoryReview(user: user)
                 .navigationTransition(.zoom(sourceID: user.id, in: transitionNamespace))
+        }
+        .task {
+            do {
+                users = try await UserList.loadFromUsersJSONFile().users
+            } catch {
+                print(error)
+            }
         }
     }
 
